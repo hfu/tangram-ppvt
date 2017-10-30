@@ -1,0 +1,32 @@
+scene:
+  background:
+    color: white
+sources:
+  pp:
+    type: MVT
+    url: https://hfu.github.io/ppvt/{z}/{x}/{y}.mvt
+    max_zoom: 13
+  basemap:
+    type: Raster
+    url: http://cyberjapandata.gsi.go.jp/xyz/seamlessphoto/{z}/{x}/{y}.jpg
+layers:
+  pp:
+    data:
+      source: pp
+      layer: pp
+    draw:
+      points:
+        blend: overlay
+        interactive: true
+        color: |
+          function() {var dict={"国土地理院": [0.58, 0.99, 0.20, 0.5], "陸軍": [0, 0, 1, 0.5], "米軍": [1, 0, 0, 0.5], "沖縄県": [0, 1, 1, 0.5]}; return dict[feature["撮影計画機関"]]||"purple"}
+        size: |
+          function() {var v = Math.round(Number(feature["撮影高度"]) / 400); return v;}
+        collide: false
+  basemap:
+    data:
+      source: basemap
+    draw:
+      raster:
+        color: [0.7, 0.7, 0.7]
+        order: 0

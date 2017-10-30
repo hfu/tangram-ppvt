@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>tangram-ppvt</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<style>
+body {margin: 0px; border: 0px; padding: 0px;}
+#map {height: 100%; width: 100%; position: absolute;}
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-hash/leaflet-hash.js"></script>
+<script src="https://mapzen.com/tangram/tangram.min.js"></script>
+<script>
+var map = L.map('map', L.extend({
+  zoom: 8,
+  center: [35, 135]
+}, L.Hash.parseHash(location.hash)))
+L.hash(map)
+var layer = Tangram.leafletLayer({
+  scene: 'scene.yaml',
+  attribution: 'GSI pp, GSI seamlessphoto'
+});
+layer.addTo(map);
+</script>
+</body>
+</html>
