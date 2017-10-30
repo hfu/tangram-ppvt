@@ -21,7 +21,7 @@ layers:
         color: |
           function() {var dict={"国土地理院": [0.58, 0.99, 0.20, 0.5], "陸軍": [0, 0, 1, 0.5], "米軍": [1, 0, 0, 0.5], "沖縄県": [0, 1, 1, 0.5]}; return dict[feature["撮影計画機関"]]||"purple"}
         size: |
-          function() {var v = Math.round(Number(feature["撮影高度"]) / 400); return v;}
+          function() {var v = Math.round(Number(feature["撮影高度"]) / 300);return v}
         collide: false
   basemap:
     data:
