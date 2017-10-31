@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <style>
 body {margin: 0px; border: 0px; padding: 0px;}
+table {margin: auto}
 #map {height: 100%; width: 100%; position: absolute;}
 #properties {
-    background-color: rgba(0,0,0,0.2);
-    border-radius: 3px;
-    bottom: 30px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.10);
-    padding: 10px;
+    background-color: rgba(0,0,0,0);
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 90%;
+    margin: auto;
     position: absolute;
-    right: 10px;
     z-index: 1000;
-    width: 180px;
+    display: inner-block;
     color: white;
     font-size: small;
     font-family: sans-serif;
@@ -31,18 +32,21 @@ body {margin: 0px; border: 0px; padding: 0px;}
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-hash/leaflet-hash.js"></script>
 <script src="https://mapzen.com/tangram/tangram.min.js"></script>
+<script src="leaflet.CenterCross.js"></script>
 <script>
 var map = L.map('map', L.extend({
   zoom: 8,
   center: [35, 135]
 }, L.Hash.parseHash(location.hash)))
+map.zoomControl.setPosition('bottomright')
+map.attributionControl.setPosition('bottomleft')
 L.hash(map)
 var layer = Tangram.leafletLayer({
   scene: 'scene.yaml',
   attribution: 'GSI pp, GSI seamlessphoto'
 });
 layer.addTo(map)
-var popup = L.popup()
+map.addControl(L.control.centerCross({show: true, position: 'bottomright'}))
 layer.setSelectionEvents({
   hover: function(selection) {
     var element = document.getElementById('properties')
