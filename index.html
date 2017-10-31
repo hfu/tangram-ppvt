@@ -9,20 +9,13 @@
 <style>
 body {margin: 0px; border: 0px; padding: 0px;}
 table {margin: auto}
+a {background-color: white}
 #map {height: 100%; width: 100%; position: absolute;}
 #properties {
-    background-color: rgba(0,0,0,0);
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 90%;
-    margin: auto;
-    position: absolute;
-    z-index: 1000;
-    display: inner-block;
-    color: white;
-    font-size: small;
-    font-family: sans-serif;
+  background-color: rgba(0,0,0,0);
+  top: 0; right: 0; left: 0; width: 200px; margin: auto;
+  position: absolute; z-index: 1000; display: inner-block;
+  color: white; font-size: small; font-family: sans-serif;
 }
 </style>
 </head>
@@ -35,8 +28,7 @@ table {margin: auto}
 <script src="leaflet.CenterCross.js"></script>
 <script>
 var map = L.map('map', L.extend({
-  zoom: 8,
-  center: [35, 135]
+  zoom: 8, center: [35, 135]
 }, L.Hash.parseHash(location.hash)))
 map.zoomControl.setPosition('bottomright')
 map.attributionControl.setPosition('bottomleft')
@@ -49,20 +41,34 @@ layer.addTo(map)
 map.addControl(L.control.centerCross({show: true, position: 'bottomright'}))
 layer.setSelectionEvents({
   hover: function(selection) {
-    var element = document.getElementById('properties')
-    if(selection.feature) {
-      var s = '<table>'
-      var r = selection.feature.properties
-      for(i in r) {
-        s += '<tr><td>' + i + '</td><td>' + r[i] + '</td></tr>'
-      }
-      s += '</table>'
-      element.innerHTML = s
-    } else {
-      element.innerHTML = ''
-    }
+
   }
-});
+})
+var element = document.getElementById('properties')
+var update_properties = function(e) {
+  layer.scene.getFeatureAt(map.latLngToContainerPoint(map.getCenter()))
+    .then(function(selection) {
+      if(!selection) return
+      if(selection.feature) {
+        var s = '<table>'
+        var r = selection.feature.properties
+        for(i in r) {
+          s += '<tr><td>' + i + '</td><td>' +
+            (i == 'ID' ? '<a target="_blank" href="http://mapps.gsi.go.jp/map-lib-api/apiContentsView.do?specificationId=' + r[i] + '">' + r[i] + '</a>' : r[i]) + '</td></tr>'
+        }
+        s += '</table>'
+        // s += '<img src="http://mapps.gsi.go.jp/map-lib-api/contentsImage.do?dispType=3&specificationId=' + selection.feature.properties['ID'] + '">'
+        element.innerHTML = s
+      } else {
+        element.innerHTML = ''
+      }
+    })
+}
+map.on('movestart', update_properties)
+map.on('move', update_properties)
+map.on('moveend', update_properties)
+map.on('mouseup', update_properties)
+map.on('click', update_properties)
 </script>
 </body>
 </html>
