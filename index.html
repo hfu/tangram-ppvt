@@ -64,10 +64,13 @@ var update_properties = function(e) {
       }
     })
 }
-map.on('movestart', update_properties)
-map.on('move', update_properties)
-map.on('moveend', update_properties)
-map.on('mouseup', update_properties)
+var erase_properties = function() {
+  element.innerHTML = ''
+}
+map.on('movestart', erase_properties)
+//map.on('move', update_properties)
+//map.on('moveend', update_properties)
+//map.on('mouseup', update_properties)
 map.on('click', update_properties)
 </script>
 </body>
